@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translation</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
+<style>
+    body {
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        height:100vh;
+        margin:0;
+        background-image: url(https://i.pinimg.com/1200x/4e/82/b9/4e82b94803ba153695e9a60ceaafba7d.jpg);
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    .translate-card {
+       background: white;
+       padding:2rem;
+       border-radius: 12px;
+       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+       width:100%;
+       max-width: 500px;
+       text-align: center;
+    }
+    select{
+        width: 100%;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+        font-size:16px;
+    }
+    textarea{
+        width:100%;
+        height:150px;
+        padding:10px;
+        border-radius: 6px;
+        border:1px solid #ccc;
+        resize:none;
+        box-sizing: border-box;
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+    .input-option{
+        display:flex;
+        justify-content: space-around;
+        margin:15px 0;
+    }
+    .option {
+        cursor:pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 12px;
+        transition: color 0.3s;
+        color:#5f6368;
+    }
+    .option:hover {
+        color:#1a73e8;
+    }
+    .option i {
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+    .translate-btn{
+        background-color: #1a73e8;
+        color: white;
+        border:none;
+        padding:12px 30px;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor:pointer;
+        width:100%;
+        transition:background 0.3s;
+        margin-top: 20px;
+    }
+    .translate-btn:hover{
+        background-color: #1557b0;
+    }
+    #file-input {
+        display: none;
+    }
+    .output {
+        margin-top: 20px;
+        padding: 10px;
+        background: #f9f9f9;
+        border-radius: 6px;
+        min-height: 50px;
+        text-align: left;
+    }
+    .select-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 20px;
+    }
+    .select-group {
+        text-align: left;
+    }
+    .select-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+    @media (max-width: 768px) {
+        body {
+            padding: 1rem;
+        }
+        .translate-card {
+            padding: 1.5rem;
+            max-width: 100%;
+        }
+        .translate-card h1 {
+            font-size: 1.5rem;
+        }
+        textarea {
+            height: 120px;
+            font-size: 1rem;
+        }
+        .input-option {
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .option {
+            padding: 0.75rem;
+        }
+        .translate-btn {
+            padding: 10px 20px;
+            font-size: 1rem;
+        }
+        .output {
+            padding: 0.75rem;
+            font-size: 0.95rem;
+        }
+    }
+    @media (max-width: 480px) {
+        .translate-card {
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        .translate-card h1 {
+            font-size: 1.25rem;
+        }
+        select {
+            padding: 8px;
+            font-size: 0.95rem;
+        }
+        textarea {
+            height: 100px;
+            padding: 8px;
+            font-size: 0.95rem;
+        }
+        .option i {
+            font-size: 18px;
+        }
+        .option span {
+            font-size: 11px;
+        }
+        .translate-btn {
+            padding: 8px 16px;
+            font-size: 0.95rem;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="translate-card">
+        <h1>Text Translator</h1>
+        <div class="input-option">
+            <div class="option" id="voice-option">
+                <i class="ri-mic-fill"></i>
+                <span>Voice</span>
+            </div>
+            <div class="option" id="picture-option">
+                <i class="ri-image-fill"></i>
+                <span>Image</span>
+            </div>
+        </div>
+        <textarea id="input-text" placeholder="Enter your text here..."></textarea>
+        <div class="select-row">
+            <div class="select-group">
+                <label for="source-language-select">From</label>
+                <select id="source-language-select"></select>
+            </div>
+            <div class="select-group">
+                <label for="language-select">To</label>
+                <select id="language-select"></select>
+            </div>
+        </div>
+        <button class="translate-btn" id="translate-btn">Translate</button>
+        <div class="output" id="output">Translated text will appear here...</div>
+        <input type="file" id="file-input" accept="image/*" hidden>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

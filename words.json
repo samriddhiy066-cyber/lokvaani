@@ -1,0 +1,84 @@
+{
+  "words": [
+    {
+      "english": "Hello",
+      "hindi": "नमस्ते",
+      "bengali": "হ্যালো",
+      "tamil": "வணக்கம்",
+      "assamese": "নমস্কাৰ",
+      "gujarati": "હેલો"
+    },
+    {
+      "english": "Thank you",
+      "hindi": "धन्यवाद",
+      "bengali": "ধন্যবাদ",
+      "tamil": "நன்றி",
+      "assamese": "ধন্যবাদ",
+      "gujarati": "આભાર"
+    },
+    {
+      "english": "Water",
+      "hindi": "पानी",
+      "bengali": "জল",
+      "tamil": "தண்ணீர்",
+      "assamese": "পানী",
+      "gujarati": "પાણી"
+    },
+    {
+      "english": "Food",
+      "hindi": "खाना",
+      "bengali": "খাবার",
+      "tamil": "உணவு",
+      "assamese": "খাদ্য",
+      "gujarati": "ખોરાક"
+    },
+    {
+      "english": "House",
+      "hindi": "घर",
+      "bengali": "বাড়ি",
+      "tamil": "வீடு",
+      "assamese": "ঘৰ",
+      "gujarati": "ઘર"
+    },
+    {
+      "english": "Love",
+      "hindi": "प्यार",
+      "bengali": "ভালবাসা",
+      "tamil": "காதல்",
+      "assamese": "প্ৰেম",
+      "gujarati": "પ્રેમ"
+    },
+    {
+      "english": "Friend",
+      "hindi": "दोस्त",
+      "bengali": "বন্ধু",
+      "tamil": "நண்பர்",
+      "assamese": "বন্ধু",
+      "gujarati": "મિત્ર"
+    },
+    {
+      "english": "School",
+      "hindi": "स्कूल",
+      "bengali": "স্কুল",
+      "tamil": "பள்ளி",
+      "assamese": "বিদ্যালয়",
+      "gujarati": "શાળા"
+    },
+    {
+      "english": "Book",
+      "hindi": "किताब",
+      "bengali": "বই",
+      "tamil": "புத்தகம்",
+      "assamese": "কিতাপ",
+      "gujarati": "પુસ્તક"
+    },
+    {
+      "english": "Music",
+      "hindi": "संगीत",
+      "bengali": "সঙ্গীত",
+      "tamil": "இசை",
+      "assamese": "সংগীত",
+      "gujarati": "સંગીત"
+    }
+  ]
+}

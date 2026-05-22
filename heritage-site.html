@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore India's Heritage | LokVaani (Universal)</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E3A8A',   // LokVaani Blue
+                        secondary: '#2563EB', // Bright Blue
+                        accent: '#F59E0B',    // Indian Saffron/Gold
+                        dark: '#0f172a',
+                        light: '#f8fafc'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom Styles -->
+    <style>
+        body {
+            background-color: #f8fafc;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .glass-dark {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .text-shadow {
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Particle base style */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.3;
+            background: white;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #1E3A8A; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #2563EB; }
+
+        .perspective { perspective: 1000px; }
+
+        /* Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px) scale(0.98);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        .hero-text {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease-out;
+        }
+        .hero-text.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased text-dark">
+
+    <!-- Fixed Navbar -->
+    <nav class="fixed w-full z-[100] transition-all duration-300 glass border-none">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3 cursor-pointer group">
+                <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg group-hover:rotate-12 transition-transform">
+                    <i class="fa-solid fa-monument"></i>
+                </div>
+                <h1 class="text-2xl font-serif font-bold text-primary tracking-tight">LokVaani</h1>
+            </div>
+            <button class="bg-primary/10 text-primary p-3 rounded-xl hover:bg-primary hover:text-white transition-all">
+                <i class="fa-solid fa-search"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+        <!-- Parallax Background -->
+        <div id="parallax-bg" class="absolute inset-0 z-0 will-change-transform">
+            <img src="https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1920&q=80" 
+                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1920&q=80'"
+                 alt="Taj Mahal" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-b from-primary/40 via-dark/20 to-dark/90"></div>
+            <div class="absolute inset-0 bg-primary/20 mix-blend-overlay"></div>
+        </div>
+
+        <div id="particle-container" class="absolute inset-0 pointer-events-none overflow-hidden z-10"></div>
+
+        <!-- Content -->
+        <div class="hero-text active relative z-20 text-center px-4 max-w-5xl">
+            <h1 class="text-5xl md:text-8xl font-serif font-extrabold text-white mb-6 tracking-tight text-shadow">
+                Explore India’s <br />
+                <span class="text-accent italic">Heritage & Wonders</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-200 font-light mb-10 max-w-3xl mx-auto leading-relaxed text-shadow">
+                Discover the timeless beauty, culture, monuments, and hidden gems of India.
+            </p>
+            <button onclick="document.getElementById('state-explorer').scrollIntoView({ behavior: 'smooth' })" class="bg-primary hover:bg-secondary text-white px-10 py-5 rounded-full font-bold text-lg shadow-2xl transition-all hover:scale-105 active:scale-95 flex items-center gap-3 mx-auto group">
+                Begin Your Journey
+                <i class="fa-solid fa-arrow-down animate-bounce"></i>
+            </button>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 animate-bounce">
+            <div class="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center pt-2">
+                <div class="w-1 h-2 bg-white rounded-full"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Heritage Explorer -->
+    <section id="state-explorer" class="py-24 bg-light relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Section Title -->
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl md:text-6xl font-serif font-bold text-primary mb-6">
+                    State-Wise Exploration
+                </h2>
+                <div class="w-24 h-1 bg-accent mx-auto rounded-full mb-8"></div>
+                <p class="text-gray-500 max-w-2xl mx-auto text-lg">
+                    Journey through the soul of India, where every state tells a different story of heritage and beauty.
+                </p>
+            </div>
+
+            <!-- States Grid (Injected via JS) -->
+            <div id="states-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <!-- Cards go here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="py-24 bg-light border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <span class="text-primary font-bold uppercase tracking-[0.3em] text-sm block mb-4">Core Engine</span>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold text-dark">Universal Technology</h2>
+            </div>
+            <div id="tech-grid" class="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
+                <!-- Techs injected via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Reference Section -->
+    <section class="py-24 bg-dark">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 reveal">
+                <div class="max-w-2xl">
+                    <span class="text-accent font-bold uppercase tracking-[0.3em] text-sm block mb-4">Further Reading</span>
+                    <h2 class="text-4xl md:text-6xl font-serif font-bold text-white leading-tight">
+                        Trusted Resources & <br/> <span class="text-white/40">Research References</span>
+                    </h2>
+                </div>
+            </div>
+            <div id="ref-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Refs injected via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-24 pb-12">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-20 reveal">
+            <div class="col-span-2">
+                <h2 class="text-3xl font-serif font-bold text-accent mb-6">LokVaani Heritage</h2>
+                <p class="text-gray-400 text-lg leading-relaxed max-w-md">
+                    Our mission is to preserve and showcase the incredible cultural tapestry of India, connecting the world with its ancient roots and hidden wonders.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6 text-white uppercase tracking-widest text-sm">Quick Links</h4>
+                <ul class="space-y-4 text-gray-500 font-medium">
+                    <li><a href="#" class="hover:text-accent transition-colors">About India</a></li>
+                    <li><a href="#" class="hover:text-accent transition-colors">Heritage Sites</a></li>
+                    <li><a href="#" class="hover:text-accent transition-colors">Travel Guides</a></li>
+                    <li><a href="#" class="hover:text-accent transition-colors">Contact Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6 text-white uppercase tracking-widest text-sm">Follow the Journey</h4>
+                <div class="flex gap-4">
+                    <a href="#" class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center hover:bg-accent hover:text-dark transition-all text-xl"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center hover:bg-accent hover:text-dark transition-all text-xl"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#" class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center hover:bg-accent hover:text-dark transition-all text-xl"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center hover:bg-accent hover:text-dark transition-all text-xl"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 pt-12 border-t border-white/5 text-center reveal">
+            <p class="text-gray-600 text-sm font-medium">
+                © 2026 LokVaani Heritage Project. Exploring the Soul of India.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Logic Script -->
+    <script>
+        // --- ASSET REPOSITORY ---
+        const IMAGE_REPO = {
+            RAJASTHAN: { STATE: "https://images.unsplash.com/photo-1599662878320-15802595b3e1?auto=format&fit=crop&w=1200&q=80", LANDMARK: "https://images.unsplash.com/photo-1524230507669-e29a017bc24e?auto=format&fit=crop&w=1200&q=80", BACKUP: "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=1200&q=80", LANDMARK_NAME: "Hawa Mahal" },
+            WEST_BENGAL: { STATE: "https://images.unsplash.com/photo-1600080077823-a44592513861?auto=format&fit=crop&w=1200&q=80", LANDMARK: "https://images.unsplash.com/photo-1600080077823-a44592513861?auto=format&fit=crop&w=1200&q=80", BACKUP: "https://images.unsplash.com/photo-1742325646212-f917ba1feeaa?auto=format&fit=crop&w=1200&q=80", LANDMARK_NAME: "Victoria Memorial" },
+            MAHARASHTRA: { STATE: "https://images.unsplash.com/photo-1566552881560-0be862a7c445?auto=format&fit=crop&w=1200&q=80", LANDMARK: "https://images.unsplash.com/photo-1570160897040-30430aac2ec7?auto=format&fit=crop&w=1200&q=80", BACKUP: "https://images.unsplash.com/photo-1567157577867-05ccb1388e66?auto=format&fit=crop&w=1200&q=80", LANDMARK_NAME: "Gateway of India" },
+            TAMIL_NADU: { STATE: "https://images.unsplash.com/photo-1677434654722-69e7ba88b4ef?auto=format&fit=crop&w=1200&q=80", LANDMARK: "https://images.unsplash.com/photo-1677434654722-69e7ba88b4ef?auto=format&fit=crop&w=1200&q=80", BACKUP: "https://images.unsplash.com/photo-1675677044118-3fd84f9deaf0?auto=format&fit=crop&w=1200&q=80", LANDMARK_NAME: "Meenakshi Temple" },
+            KERALA: { STATE: "https://images.unsplash.com/photo-1677475455506-1e429162f44f?auto=format&fit=crop&w=1200&q=80", LANDMARK: "https://images.unsplash.com/photo-1677475455506-1e429162f44f?auto=format&fit=crop&w=1200&q=80", BACKUP: "https://images.unsplash.com/photo-1742106850925-7aeec2fb1ce9?auto=format&fit=crop&w=1200&q=80", LANDMARK_NAME: "Alleppey Backwaters" },
+            UTTAR_PRADESH: { STATE: "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1200&q=80", LANDMARK: "https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1200&q=80", BACKUP: "https://images.unsplash.com/photo-1561359313-0639aad49ca6?auto=format&fit=crop&w=1200&q=80", LANDMARK_NAME: "Taj Mahal" },
+            JAMMU_KASHMIR: { STATE: "https://images.unsplash.com/photo-1715457573748-8e8a70b2c1be?auto=format&fit=crop&w=1200&q=80", LANDMARK: "https://images.unsplash.com/photo-1715457573748-8e8a70b2c1be?auto=format&fit=crop&w=1200&q=80", BACKUP: "https://images.unsplash.com/photo-1651509094074-e8acaeb84d8f?auto=format&fit=crop&w=1200&q=80", LANDMARK_NAME: "Dal Lake" }
+        };
+
+        const statesData = [
+            { id: "st_rj", name: "Rajasthan", desc: "The Land of Kings, where history lives in vibrant palaces and vast golden deserts.", food: "Dal Baati Churma", art: "Ghoomar Dance", images: IMAGE_REPO.RAJASTHAN },
+            { id: "st_wb", name: "West Bengal", desc: "A land of artistic depth, colonial grandeur, and the majestic Sundarbans.", food: "Roshogolla & Fish Curry", art: "Baul Sangeet", images: IMAGE_REPO.WEST_BENGAL },
+            { id: "st_mh", name: "Maharashtra", desc: "Gateway to ancient caves, bustling cities, and a rich Maratha legacy.", food: "Vada Pav & Puran Poli", art: "Lavani Folk Art", images: IMAGE_REPO.MAHARASHTRA },
+            { id: "st_tn", name: "Tamil Nadu", desc: "Dravidian architecture meets coastal tranquility and spiritual wisdom.", food: "Idli Sambar & Dosas", art: "Bharatanatyam", images: IMAGE_REPO.TAMIL_NADU },
+            { id: "st_kl", name: "Kerala", desc: "God's Own Country, defined by serene backwaters and lush emerald greenery.", food: "Appam with Stew", art: "Kathakali Performance", images: IMAGE_REPO.KERALA },
+            { id: "st_up", name: "Uttar Pradesh", desc: "The spiritual heart of India, home to the eternal symbol of love.", food: "Lucknowi Kebabs", art: "Kathak Dance", images: IMAGE_REPO.UTTAR_PRADESH },
+            { id: "st_jk", name: "Jammu & Kashmir", desc: "Paradise on Earth, where snowy peaks mirror in crystal clear lakes.", food: "Kashmiri Wazwan", art: "Sufiana Kalam", images: IMAGE_REPO.JAMMU_KASHMIR }
+        ];
+
+        // --- RENDER STATES ---
+        const statesGrid = document.getElementById('states-grid');
+        statesData.forEach((state, i) => {
+            const delayClass = `reveal-delay-${(i % 3) + 1}`;
+            statesGrid.innerHTML += `
+                <div class="reveal ${delayClass} group relative h-[600px] rounded-[2.5rem] overflow-hidden glass shadow-2xl transition-all perspective hover:scale-[1.02] cursor-pointer">
+                    <div class="absolute inset-0 z-0">
+                        <div class="absolute inset-0 flex items-center justify-center bg-gray-100 loader">
+                            <div class="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                        </div>
+                        <img src="${state.images.STATE}" 
+                             onerror="this.onerror=null; this.src='${state.images.BACKUP}'"
+                             onload="this.previousElementSibling.style.display='none'; this.classList.remove('opacity-0')"
+                             alt="${state.name} Landscape"
+                             class="w-full h-full object-cover transition-all duration-1000 opacity-0 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark/95 via-dark/40 to-transparent"></div>
+                    </div>
+                    <div class="absolute inset-0 z-10 p-8 flex flex-col justify-end text-white">
+                        <div class="mb-4">
+                            <span class="bg-accent/90 text-dark text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-lg">India's Pride</span>
+                        </div>
+                        <h2 class="text-4xl font-serif font-bold mb-3">${state.name}</h2>
+                        <p class="text-gray-300 text-sm mb-6 leading-relaxed opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                            ${state.desc}
+                        </p>
+                        <div class="glass-dark rounded-3xl p-5 mb-6 transform scale-95 group-hover:scale-100 transition-all duration-500 border border-white/5">
+                            <div class="flex items-center gap-4 mb-3">
+                                <div class="relative w-16 h-16 rounded-2xl flex-shrink-0 overflow-hidden">
+                                    <div class="absolute inset-0 flex items-center justify-center bg-gray-700 loader">
+                                        <div class="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                                    </div>
+                                    <img src="${state.images.LANDMARK}" 
+                                         onerror="this.onerror=null; this.src='${state.images.BACKUP}'"
+                                         onload="this.previousElementSibling.style.display='none'; this.classList.remove('opacity-0')"
+                                         alt="${state.images.LANDMARK_NAME}"
+                                         class="w-full h-full object-cover opacity-0 transition-opacity duration-500">
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-accent text-sm leading-tight">${state.images.LANDMARK_NAME}</h4>
+                                    <p class="text-[10px] text-gray-400 font-medium">Iconic Heritage Site</p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mt-2">
+                                <div class="space-y-1">
+                                    <p class="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Traditional Art</p>
+                                    <p class="text-xs font-semibold">$

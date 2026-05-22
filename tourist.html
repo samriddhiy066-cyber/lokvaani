@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>India Tourist Guides Directory</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 20px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            max-width: 500px;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7f8c8d;
+            font-size: 20px;
+        }
+
+        .guides-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .guide-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .guide-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+
+        .guide-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: white;
+            margin: 0 auto 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .guide-name {
+            font-size: 1.8em;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .location {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: #27ae60;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .location i {
+            color: #e74c3c;
+        }
+
+        .rate {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1em;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .experience {
+            background: #3498db;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .languages {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .lang-tag {
+            background: #ecf0f1;
+            color: #2c3e50;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .contact-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .contact-item i {
+            color: #3498db;
+            width: 20px;
+        }
+
+        .specialty {
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: #3498db;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .guides-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .guide-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🇮🇳 India Tourist Guides</h1>
+            <p class="subtitle">Discover expert local guides across India</p>
+            <div class="search-box">
+                <i class="search-icon">🔍</i>
+                <input type="text" placeholder="Search guides by city or language...">
+            </div>
+        </header>
+
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">All Cities</button>
+            <button class="filter-btn" data-filter="delhi">Delhi</button>
+            <button class="filter-btn" data-filter="mumbai">Mumbai</button>
+            <button class="filter-btn" data-filter="jaipur">Jaipur</button>
+            <button class="filter-btn" data-filter="kerala">Kerala</button>
+            <button class="filter-btn" data-filter="varanasi">Varanasi</button>
+        </div>
+
+        <div class="guides-grid">
+            
+            <div class="guide-card" data-city="delhi">
+                <div class="guide-image">R</div>
+                <div class="guide-name">Ritesh</div>
+                <div class="location">
+                    <i>📍</i>
+                    New Delhi, Delhi
+                </div>
+                <div class="rate">$14-$200(depends on location)</div>
+                <div class="experience">3 Years Experience</div>
+                <div class="languages">
+                    <span class="lang-tag">Hindi</span>
+                    <span class="lang-tag">English</span>
+                    
+                </div>
+                <div class="specialty">Full Coverage Tours</div>
+                <div class="contact-info">
+                    <p> Book via official website</p>
+                    <a href="https://www.withlocals.com/host/riteshr60e4b93aa/" target="_blank" rel="noopener noreferrer">
+                        Book Now
+                    </a>
+                </div>
+            </div>
+<div class="guide-card" data-city="delhi">
+                <div class="guide-image">M</div>
+                <div class="guide-name">Madhavendra</div>
+                <div class="location">
+                    <i>📍</i>
+                    New Delhi
+                </div>
+                <div class="rate">$40 and above (depends on location)</div>
+                <div class="experience">8 Years Experience</div>
+                <div class="languages">
+                    <span class="lang-tag">Hindi</span>
+                    <span class="lang-tag">English</span>
+                    <span class="lang-tag">Espanol</span>
+                </div>
+                <div class="specialty">Diverse range of trips</div>
+                <div class="contact-info">
+                    <p> Book via official website</p>
+                    <a href="https://www.withlocals.com/host/madhavendras310822163b4348/" target="_blank" rel="noopener noreferrer">
+                        Book Now
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mumbai Guide -->
+            <div class="guide-card" data-city="mumbai">
+                <div class="guide-image">S</div>
+                <div class="guide-name">Srikanth</div>
+                <div class="location">
+                    <i>📍</i>
+                    Mumbai, Maharashtra
+                </div>
+                <div class="rate"> $20 and above</div>
+                <div class="experience">3 Years Experience</div>
+                <div class="languages">
+                    <span class="lang-tag">English</span>
+                    <span class="lang-tag">Hindi</span>
+                   
+                </div>
+                <div class="specialty">Memory Maker</div>
+                <div class="contact-info">
+                   <p>Book via official website</p>
+                   <a href="https://www.withlocals.com/host/shrikanthp5115c0582/" target="_blank" rel="noopener noreferrer">
+                        Book Now
+                    </a>
+                </div>
+            </div>
+
+            <!-- Gautam Guide -->
+            <div class="guide-card" data-city="mumbai">
+                <div class="guide-image">G</div>
+                <div class="guide-name">Gautam</div>
+                <div class="location">
+                    <i>📍</i>
+                    Mumbai, Maharashtra
+                </div>
+                <div class="rate"> $15 and above</div>
+                <div class="experience">16 Years Experience</div>
+                <div class="languages">
+                    <span class="lang-tag">English</span>
+                    <span class="lang-tag">Hindi</span>
+                   
+                </div>
+                <div class="specialty">The Bollywood Badshah</div>
+                <div class="contact-info">
+                   <p>Book via official website</p>
+                   <a href="https://www.withlocals.com/host/gautamj21f69072b/" target="_blank" rel="noopener noreferrer">
+                        Book Now
+                    </a>
+                </div>
+            </div>
+
+            <!-- Jaipur Guide -->
+            <div class="guide-card" data-city="jaipur">
+                <div class="guide-image">N</div>
+                <div class="guide-name">Neha</div>
+                <div class="location">
+                    <i>📍</i>
+                    Jaipur, Rajasthan
+                </div>
+                <div class="rate">$15 and above</div>
+                <div class="experience">10+ Years Experience</div>
+                <div class="languages">
+            
+                    <span class="lang-tag">English</span>
+                
+                </div>
+                <div class="specialty">Jaipur Heritage Specialist</div>
+                <div class="contact-info">
+                    <p>Book via official website</p>
+                    <a href="https://www.withlocals.com/host/nehaa95dea5155/" target="_blank" rel="noopener noreferrer">
+                        Book Now
+                    </a>
+                </div>
+            </div>
+             <div class="guide-card" data-city="jaipur">
+                <div class="guide-image">R</div>
+                <div class="guide-name">Ravi</div>
+                <div class="location">
+                    <i>📍</i>
+                    Jaipur, Rajasthan
+                </div>
+                <div class="rate">$20-$60</div>
+                <div class="experience">15+ Years Experience</div>
+                <div class="languages">
+            
+                    <span class="lang-tag">English</span>
+                
+                </div>
+                <div class="specialty">Hidden Gems Explorer</div>
+                <div class="contact-info">
+                    <p>Book via official website</p>
+                    <a href="https://www.withlocals.com/host/ravidd2b49319f75d4d/" target="_blank" rel="noopener noreferrer">
+                        Book Now
+                    </a>
+                </div>
+            </div>
+
+            <!-- Kerala Guide -->
+            <div class="guide-card" data-city="kerala">
+                <div class="guide-image">FG</div>
+                <div class="guide-name">Felix George</div>
+                <div class="location">
+                    <i>📍</i>
+                    Kerala
+                </div>
+                <div class="rate"></div>
+                <div class="experience">4 Years Experience</div>
+                <div class="languages">
+                    <span class="lang-tag">English</span>
+                    <span class="lang-tag">French</span>
+                </div>
+                <div class="specialty">Comfortable Tour Experience</div>
+                <div class="contact-info">
+                    <p>Book via official website</p>
+                    <a href="https://www.keralatourism.org/tourist-guide-portal/guide/details/29" target="_blank" rel="noopener noreferrer">
+                        Book Now
+                    </a>
+                </div>
+            </div>
+             <div class="guide-card" data-city="kerala">
+                <div class="guide-image">S</div>
+                <div class="guide-name">Sundaramoorthy C.K</div>
+                <div class="location">
+                    <i>📍</i>
+                    Kerala
+                </div>
+                <div class="rate"></div>
+                <div class="experience">36 Years Experience</div>
+                <div class="languages">
+                    <span class="lang-tag">English</span>
+                    
+                </div>
+                <div class="specialty">Fun & Informative Tours</div>
+                <div class="contact-info">
+                    <p>Book via official website</p>
+                    <a href="https://www.keralatourism.org/tourist-guide-portal/guide/details/18" target="_blank" rel="noopener noreferrer">
+                        Book Now
+                    </a>
+                </div>
+            </div>
+
+            <!-- Varanasi Guide -->
+            <div class="guide-card" data-city="varanasi">
+                <div class="guide-image">T</div>
+                <div class="guide-name">Taha</div>
+                <div class="location">
+                    <i>📍</i>
+                    Varanasi, Uttar Pradesh
+                </div>
+                <div class="rate">$20-$60</div>
+                <div class="experience">2 Years Experience</div>
+                <div class="languages">
+                    <span class="lang-tag">Hindi</span>
+                    <span class="lang-tag">English</span>
+                   
+                </div>
+                <div class="specialty">A Walk to Remember</div>
+                <div class="contact-info">
+                    <p>Book via official website</p>
+                    <a href="https://www.withlocals.com/host/my-lifeu2987181ccc2440/" target="_blank" rel="noopener noreferrer">
+                        Book Now
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="guide-card" data-city="varanasi">
+                <div class="guide-image">AJ</div>
+                <div class="guide-name">Anish Jha</div>
+                <div class="location">
+                    <i>📍</i>
+                    Varanasi, Uttar Pradesh
+                </div>
+                <div class="rate">$20-$50</div>
+                <div class="experience">3 Years Experience</div>
+                <div class="languages">
+                   
+                    <span class="lang-tag">English</span>
+                   
+                </div>
+                <div class="specialty">Spiritual & Ghat Tours</div>
+                <div class="contact-info">
+                    <p>Book via official website</p>
+                    <a href="https://www.withlocals.com/host/anish-jhaa5b586bd7f0ea49/" target="_blank" rel="noopener noreferrer">
+                        Book Now
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; padding: 40px; background: rgba(255,255,255,0.9); border-radius: 20px; margin-top: 40px;">
+            <h2 style="color: #2c3e50; margin-bottom: 20px;">💡 Tips for Hiring Local Guides</h2>
+            <ul style="max-width: 800px; margin: 0 auto; text-align: left; font-size: 1.1em;">
+                <li>✅ Confirm rates and itinerary in advance</li>
+                <li>✅ Check for government-approved guide ID</li>
+                <li>✅ Ask about group size discounts</li>
+                <li>✅ Carry cash for tips (10-15% recommended)</li>
+                <li>✅ Verify language proficiency before finalizing</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Filter functionality
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const guideCards = document.querySelectorAll('.guide-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+
+                const filterValue = btn.getAttribute('data-filter');
+
+                guideCards.forEach(card => {
+                    if (filterValue === 'all' || card.getAttribute('data-city') === filterValue) {
+                        card.style.display = 'block';
+                        card.style.animation = 'fadeIn 0.5s ease';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        
+        const searchInput = document.querySelector('.search-box input');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            guideCards.forEach(card => {
+                const name = card.querySelector('.guide-name').textContent.toLowerCase();
+                const location = card.querySelector('.location').textContent.toLowerCase();
+                if (name.includes(searchTerm) || location.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {

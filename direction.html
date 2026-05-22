@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LokVaani Directions</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(180deg, #1a2a47 0%, #0f172a 100%);
+            color: #f8fafc;
+        }
+        .directions-card {
+            width: min(95%, 840px);
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
+            padding: 2rem;
+            backdrop-filter: blur(12px);
+        }
+        .directions-card h1 {
+            margin: 0 0 0.5rem;
+            font-size: clamp(2rem, 2.5vw, 3rem);
+            letter-spacing: -0.04em;
+        }
+        .directions-card p {
+            margin: 0 0 1.5rem;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+        .directions-form {
+            display: grid;
+            gap: 1rem;
+        }
+        .field-group {
+            display: grid;
+            gap: 0.5rem;
+        }
+        label {
+            font-size: 0.95rem;
+            color: #cbd5e1;
+        }
+        input {
+            width: 100%;
+            padding: 0.95rem 1rem;
+            border-radius: 14px;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            background: rgba(15, 23, 42, 0.85);
+            color: #f8fafc;
+            font-size: 1rem;
+        }
+        input::placeholder {
+            color: #94a3b8;
+        }
+        .form-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        button {
+            border: none;
+            border-radius: 14px;
+            padding: 0.95rem 1.25rem;
+            font-size: 1rem;
+            cursor: pointer;
+            background: #4f46e5;
+            color: white;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+        button:hover {
+            transform: translateY(-1px);
+            background: #6366f1;
+        }
+        button.secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: #f8fafc;
+        }
+        .directions-results {
+            margin-top: 1.75rem;
+            padding: 1.5rem;
+            border-radius: 20px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+        }
+        .directions-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        .directions-summary div {
+            min-width: 180px;
+        }
+        .directions-summary span {
+            display: block;
+            color: #94a3b8;
+            font-size: 0.92rem;
+        }
+        .directions-summary strong {
+            display: block;
+            font-size: 1.15rem;
+            margin-top: 0.25rem;
+        }
+        .step-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 0.9rem;
+        }
+        .step-list li {
+            padding: 1rem;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            line-height: 1.5;
+            font-size: 0.98rem;
+        }
+        .error-text {
+            color: #f87171;
+            margin-top: 1rem;
+        }
+        @media (max-width: 640px) {
+            .directions-summary {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .directions-card {
+                width: 95%;
+                padding: 1.5rem;
+            }
+
+            .directions-card h1 {
+                font-size: 2rem;
+            }
+
+            .directions-card p {
+                font-size: 1rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .directions-results {
+                padding: 1rem;
+            }
+
+            .step-list li {
+                padding: 0.75rem;
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .directions-card {
+                width: 98%;
+                padding: 1rem;
+                border-radius: 16px;
+            }
+
+            .directions-card h1 {
+                font-size: 1.75rem;
+            }
+
+            .directions-card p {
+                font-size: 0.95rem;
+                margin-bottom: 1rem;
+            }
+
+            input {
+                padding: 0.85rem 1rem;
+                font-size: 1rem;
+            }
+
+            button {
+                padding: 0.85rem 1rem;
+                font-size: 1rem;
+            }
+
+            .directions-summary {
+                gap: 0.75rem;
+            }
+
+            .directions-summary div {
+                min-width: auto;
+            }
+
+            .directions-summary span {
+                font-size: 0.85rem;
+            }
+
+            .directions-summary strong {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="directions-card">
+        <h1>Route Finder</h1>
+        <p>Enter a starting point and destination, then get driving directions using open map services.</p>
+
+        <form id="directions-form" class="directions-form">
+            <div class="field-group">
+                <label for="origin">Origin</label>
+                <input id="origin" type="text" placeholder="E.g. New Delhi, India" required>
+            </div>
+            <div class="field-group">
+                <label for="destination">Destination</label>
+                <input id="destination" type="text" placeholder="E.g. Agra, India" required>
+            </div>
+            <div class="form-actions">
+                <button type="submit">Get Directions</button>
+                <button type="button" class="secondary" id="use-location">Use My Location</button>
+            </div>
+        </form>
+
+        <div id="directions-result" class="directions-results" aria-live="polite">
+            <p>Route details will appear here after you search.</p>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('directions-form');
+        const originInput = document.getElementById('origin');
+        const destinationInput = document.getElementById('destination');
+        const resultBox = document.getElementById('directions-result');
+        const useLocationBtn = document.getElementById('use-location');
+
+        form.addEventListener('submit', async event => {
+            event.preventDefault();
+            await loadDirections();
+        });
+
+        useLocationBtn.addEventListener('click', async () => {
+            if (!navigator.geolocation) {
+                showError('Geolocation is not supported by your browser.');
+                return;
+            }
+            showStatus('Getting your current location…');
+            navigator.geolocation.getCurrentPosition(async position => {
+                const { latitude, longitude } = position.coords;
+                const address = await reverseGeocode(latitude, longitude);
+                if (address) {
+                    originInput.value = address;
+                    showStatus('Current location found. Enter destination and get directions.');
+                }
+            }, () => {
+                showError('Unable to get your location. Please enter it manually.');
+            });
+        });
+
+        async function loadDirections() {
+            const origin = originInput.value.trim();
+            const destination = destinationInput.value.trim();
+            if (!origin || !destination) {
+                showError('Please enter both origin and destination.');
+                return;
+            }
+
+            showStatus('Searching route…');
+            try {
+                const originCoord = await geocodeLocation(origin);
+                const destinationCoord = await geocodeLocation(destination);
+
+                if (!originCoord || !destinationCoord) {
+                    showError('Could not find one of the locations. Please refine your search.');
+                    return;
+                }
+
+                const route = await fetchRoute(originCoord, destinationCoord);
+                renderRoute(route, origin, destination);
+            } catch (error) {
+                console.error(error);
+                showError('Unable to load directions. Please try again later.');
+            }
+        }
+
+        async function geocodeLocation(query) {
+            const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(query)}`;
+            const response = await fetch(url, { headers: { 'Accept': 'application/json' } });
+            if (!response.ok) throw new Error('Geocoding failed');
+            const results = await response.json();
+            return results[0];
+        }
+
+        async function reverseGeocode(lat, lon) {
+            const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
+            const response = await fetch(url, { headers: { 'Accept': 'application/json' } });
+            if (!response.ok) return null;
+            const data = await response.json();
+            return data.display_name || null;
+        }
+
+        async function fetchRoute(origin, destination) {
+            const coords = `${origin.lon},${origin.lat};${destination.lon},${destination.lat}`;
+            const url = `https://router.project-osrm.org/route/v1/driving/${coords}?overview=false&steps=true&alternatives=false`;
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Route request failed');
+            const data = await response.json();
+            return data.routes && data.routes[0] ? data.routes[0] : null;
+        }
+
+        function renderRoute(route, originText, destinationText) {
+            if (!route) {
+                showError('No route found between these locations.');
+                return;
+            }
+
+            const distanceKm = (route.distance / 1000).toFixed(1);
+            const durationMin = Math.round(route.duration / 60);
+            const steps = route.legs[0].steps;
+
+            const stepHtml = steps.map((step, index) => {
+                let instruction = 'Continue';
+                
+                // Try to get instruction from maneuver
+                if (step.maneuver && step.maneuver.instruction) {
+                    instruction = step.maneuver.instruction;
+                } else if (step.name) {
+                    // Fallback to street name if available
+                    instruction = `Continue on ${step.name}`;
+                } else if (step.maneuver && step.maneuver.type) {
+                    // Fallback to maneuver type
+                    instruction = step.maneuver.type.charAt(0).toUpperCase() + step.maneuver.type.slice(1);
+                }
+                
+                const distance = (step.distance / 1000).toFixed(2);
+                return `<li><strong>Step ${index + 1}:</strong> ${instruction} (${distance} km)</li>`;
+            }).join('');
+
+            resultBox.innerHTML = `
+                <div class="directions-summary">
+                    <div>
+                        <span>Origin</span>
+                        <strong>${originText}</strong>
+                    </div>
+                    <div>
+                        <span>Destination</span>
+                        <strong>${destinationText}</strong>
+                    </div>
+                    <div>
+                        <span>Distance</span>
+                        <strong>${distanceKm} km</strong>
+                    </div>
+                    <div>
+                        <span>Estimated time</span>
+                        <strong>${durationMin} min</strong>
+                    </div>
+                </div>
+                <ol class="step-list">${stepHtml}</ol>
+                <p style="margin-top:1rem; text-align:right;">
+                    <a href="https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(originText)}&destination=${encodeURIComponent(destinationText)}" target="_blank" rel="noopener" style="color:#93c5fd; text-decoration:underline;">Open route in Google Maps</a>
+                </p>
+            `;
+        }
+
+        function showStatus(message) {
+            resultBox.innerHTML = `<p>${message}</p>`;
+            resultBox.classList.remove('error-text');
+        }
+
+        function showError(message) {
+            resultBox.innerHTML = `<p class="error-text">${message}</p>`;
+        }
+    </script>
+</body>
+</html>
